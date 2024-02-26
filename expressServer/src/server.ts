@@ -33,7 +33,6 @@ app.get("/api/planets/:id", getOneById);
 app.post("/api/planets", create);
 app.put("/api/planets/:id", updateById);
 app.delete("/api/planets/:id", deleteById);
-
 app.post("/api/planets/:id/image", upload.single("image"), createImage);
 
 app.listen(port, () => {
