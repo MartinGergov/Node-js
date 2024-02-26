@@ -36,17 +36,20 @@ const logIn = async (req: Request, res: Response) => {
     const token = jwt.sign(payload, SECRET!);
 
     await db.none(`UPDATE users SET token=$2 WHERE id=$1`, [user.id, token]);
-    res
-      .status(200)
-      .json({
-        msg: "Signup succesful. Now you can log in",
-        id: user.id,
-        username,
-        token,
-      });
+    res.status(200).json({
+      msg: "Signup succesful. Now you can log in",
+      id: user.id,
+      username,
+      token,
+    });
   } else {
     res.status(400).json({ msg: "Username or password incorrect" });
   }
 };
 
-export { signUp, logIn };
+const logOut = async (req: Request, res: Response) => {
+  const user: any = req.user;
+  await db.none(`UPDATE users SET token=$2 WHERE id=$1`, [user?.id, null]);
+  res.status(200).json({ msg: "Logout succesful" });
+};
+export { signUp, logIn, logOut };
